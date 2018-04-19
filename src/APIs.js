@@ -1,5 +1,5 @@
 
-const api = "http://192.168.1.57:3001"
+const api = process.env.ORIGIN || "http://192.168.1.57:3001"
 
 // Generate a unique token for storing data on the backend server.
 let token = localStorage.token
