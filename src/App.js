@@ -470,13 +470,36 @@ class App extends Component {
                       }
                     </div>
                   </div>
-                  <div className="comments-list-container">
+                  <div className="add-comment">
                     <button onClick={()=> (!this.state.commentFormVisible) ? this.setState({commentFormVisible: true}) : this.setState({commentFormVisible: false})}>Add Comment</button>
                     <h3>Comments</h3>
+                    {(this.state.commentFormVisible) ?
+                      (<div className="formContainer">
+                        <form onSubmit={(event) => this.commentSubmit(event, post.id)}>
+                          <ul className="form-style">
+                            <li>
+                              <label>Author <span className="required">*</span></label>
+                              <input type="text" name="commentAuthor" className="field-long" onChange={this.handleChange} required/>
+                            </li>
+                            <li>
+                              <label>Body <span className="required">*</span></label>
+                              <textarea type="text" name="commentBody" className="field-long field-textarea" onChange={this.handleChange} required/>
+                            </li>
 
+                            <li>
+                              <input type="submit" value="Submit" />
+                            </li>
+                          </ul>
+                        </form>
+                      </div>) : ""
+                    }
+                  </div>
+                  <div className="comments-list-container">
+                    {this.getCommentsList(post.id)}
+                    <ol className="comments-list" >
                      {this.props.commentsList.map(comment => (
-                        <div className="comments-list" key={comment.id}>
-                          <div className="comment">
+
+                          <div className="comment" key={comment.id}>
                             <div className="comment-count">
                               <div className="up-vote">
                                 <a onClick={(e) => this.upVoteComment(comment.id, comment.parentId)}><i className="up"></i></a>
@@ -488,7 +511,7 @@ class App extends Component {
                             </div>
                             <div className="comment-body">
                               <p className="tagline">
-                                submitted <time>{this.timeToString(post.timestamp)}</time> by { comment.author}
+                                submitted <time>{this.timeToString(comment.timestamp)}</time> by { comment.author}
                               </p>
                               <p className="comment-title">
                                 {comment.body}
@@ -522,31 +545,10 @@ class App extends Component {
                               }
                             </div>
                           </div>
-                        </div>
+
                       ))}
-
+                    </ol>
                   </div>
-
-                  {(this.state.commentFormVisible) ?
-                    (<div className="formContainer">
-                      <form onSubmit={(event) => this.commentSubmit(event, post.id)}>
-                        <ul className="form-style">
-                          <li>
-                            <label>Author <span className="required">*</span></label>
-                            <input type="text" name="commentAuthor" className="field-long" onChange={this.handleChange} required/>
-                          </li>
-                          <li>
-                            <label>Body <span className="required">*</span></label>
-                            <textarea type="text" name="commentBody" className="field-long field-textarea" onChange={this.handleChange} required/>
-                          </li>
-
-                          <li>
-                            <input type="submit" value="Submit" />
-                          </li>
-                        </ul>
-                      </form>
-                    </div>) : ""
-                  }
                 </div>
               </div>
             )}>
